@@ -177,31 +177,46 @@ include "koneksi.php";
     </section>
 
     <!-- GALLERY -->
-    <section id="GALLERY" class="text-center p-5 bg-info-subtle">
-        <div class="container">
-            <h1 class="fw-bold display-6 pb-3">Gallery</h1>
-            <div id="carouselExample" class="carousel slide">
-                <div class="carousel-inner">
-                    <div class="carousel-item active"><img src="https://i.ibb.co.com/B5QJxpDg/IMG-0781.png"
-                            class="d-block w-100" alt="..."></div>
-                    <div class="carousel-item"><img
-                            src="https://i.ibb.co.com/ym2FPzyf/22398091-83d7-4021-95ea-233977653baa.jpg"
-                            class="d-block w-100" alt="..."></div>
-                    <div class="carousel-item"><img
-                            src="https://i.ibb.co.com/Df8wBYpT/8ac0e5ca-5541-49db-9fa0-e089b07b5831.jpg"
-                            class="d-block w-100" alt="..."></div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </button>
+   <!-- GALLERY -->
+<section id="GALLERY" class="text-center p-5 bg-info-subtle">
+    <div class="container">
+        <h1 class="fw-bold display-6 pb-3">Gallery</h1>
+
+        <?php
+        $sql = "SELECT * FROM gallery ORDER BY tanggal DESC";
+        $hasil = $conn->query($sql);
+        $active = true;
+        ?>
+
+        <div id="carouselGallery" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+
+                <?php while ($row = $hasil->fetch_assoc()) { ?>
+                    <div class="carousel-item <?= $active ? 'active' : '' ?>">
+                        <img src="img/<?= $row['gambar'] ?>"
+                             class="d-block w-100"
+                             style="max-height:500px; object-fit:cover;">
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                            <h5><?= $row['deskripsi'] ?></h5>
+                            <small><?= $row['tanggal'] ?></small>
+                        </div>
+                    </div>
+                <?php $active = false; } ?>
+
             </div>
+
+            <button class="carousel-control-prev" type="button"
+                    data-bs-target="#carouselGallery" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button"
+                    data-bs-target="#carouselGallery" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
         </div>
-    </section>
+    </div>
+</section>
+
     <!-- SCHEDULE -->
 <section id="SCHEDULE" class="text-center p-5">
     <div class="container">
