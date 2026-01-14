@@ -2,7 +2,10 @@
 // =====================
 // BAGIAN PHP (WAJIB DI ATAS, JANGAN ADA HTML SEBELUM INI)
 // =====================
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start(); // ⬅️ FIX agar tidak notice session
+}
+
 include "koneksi.php";
 
 $error = "";
@@ -17,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Username dan password tidak boleh kosong!";
     } else {
 
-        // Enkripsi password (sesuai database kamu)
+        // Enkripsi password (SESUAI DATABASE KAMU)
         $password = md5($password);
 
         // Query login
@@ -32,11 +35,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Jika login berhasil
         if ($row) {
-            // 🔑 SIMPAN SESSION (INI KUNCI UTAMA)
+
+            // =====================
+            // SESSION (INI YANG DIPERBAIKI)
+            // =====================
+            $_SESSION['id']       = $row['id'];       // ⬅️ FIX (bukan id_user)
             $_SESSION['username'] = $row['username'];
 
             header("Location: admin.php");
             exit;
+
         } else {
             $error = "Username atau password salah!";
         }
